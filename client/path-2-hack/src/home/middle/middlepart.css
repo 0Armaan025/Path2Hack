@@ -1,0 +1,19 @@
+.middlePart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h3 {
+  margin-top: 20px;
+  font-size: 3rem;
+  color: white;
+  font-weight: 700;
+}
+
+h4 {
+  font-size: 2rem;
+  color: white;
+  font-weight: 600;
+}
