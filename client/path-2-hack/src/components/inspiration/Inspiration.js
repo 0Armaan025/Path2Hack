@@ -7,7 +7,9 @@ import "./Inspiration.css";
 const GenerateIdea = () => {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <form>
+      <form 
+        // onSubmit={handleSubmit}
+      >
         <textarea
           className="w-1/2 h-32 p-2 m-2 border-2 border-gray-300 rounded-lg"
           placeholder="Write a basic info of your project"

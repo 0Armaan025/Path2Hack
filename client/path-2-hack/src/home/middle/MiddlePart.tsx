@@ -2,6 +2,7 @@
 import React from "react";
 import "./middlepart.css";
 import localFont from "next/font/local";
+import FeaturesList from "@/components/featuresList/FeaturesList";
 
 const helvetica = localFont({ src: "../../app/fonts/Helvetica5.ttf" });
 
@@ -31,6 +32,8 @@ const MiddlePart = (props: Props) => {
             <input type="button" className="guideBtn" value="Guides" />
           </div>
         </div>
+        <br />
+        <FeaturesList />
       </center>
     </>
   );
