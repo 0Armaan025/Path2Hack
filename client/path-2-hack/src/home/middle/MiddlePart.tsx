@@ -3,6 +3,7 @@ import React from "react";
 import "./middlepart.css";
 import localFont from "next/font/local";
 import FeaturesList from "@/components/featuresList/FeaturesList";
+import IdeaGenerator from "@/app/idea-generator/page";
 
 const helvetica = localFont({ src: "../../app/fonts/Helvetica5.ttf" });
 
@@ -11,8 +12,8 @@ type Props = {};
 const MiddlePart = (props: Props) => {
   return (
     <>
-      <center>
-        <div className="middlePart mt-32 flex flex-col justify-center items-center">
+      {/* <center> */}
+      {/* <div className="middlePart mt-32 flex flex-col justify-center items-center">
           <h3
             className={`text-7xl font-semibold text-white ${helvetica.className}`}
           >
@@ -33,8 +34,9 @@ const MiddlePart = (props: Props) => {
           </div>
         </div>
         <br />
-        <FeaturesList />
-      </center>
+        <FeaturesList /> */}
+      <IdeaGenerator />
+      {/* </center> */}
     </>
   );
 };
