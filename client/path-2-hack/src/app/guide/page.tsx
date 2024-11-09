@@ -10,7 +10,6 @@ const initialTiles = [
   { id: 4, content: "Deploy Project", x: 300, y: 200 },
 ];
 
-
 const tileConnections = [
   { from: 1, to: 2 },
   { from: 2, to: 3 },
@@ -18,21 +17,27 @@ const tileConnections = [
 ];
 
 const HackersGuide = () => {
-  const [tiles, setTiles] = useState(initialTiles);
+  const [tiles, setTiles] =
+    useState<{ id: number; content: string; x: number; y: number }[]>(
+      initialTiles
+    );
   const [draggingTile, setDraggingTile] = useState<{
     id: number;
     offsetX: number;
     offsetY: number;
   } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTileContent, setSelectedTileContent] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalParagraph, setModalParagraph] = useState("");
 
   const handleDragStart = (
-    tile: { id: number; x: number; y: number },
+    tile: { id: number; content: string; x: number; y: number },
     e: React.MouseEvent<HTMLDivElement>
   ) => {
-    const { id } = tile;
     e.preventDefault();
     setDraggingTile({
-      id,
+      id: tile.id,
       offsetX: e.clientX - tile.x,
       offsetY: e.clientY - tile.y,
     });
@@ -59,39 +64,29 @@ const HackersGuide = () => {
   };
 
   const handleDoubleClick = (tileContent: string) => {
-    alert(`Tile content: ${tileContent}`);
+    // Set the modal title and paragraph based on the tile content
+    setSelectedTileContent(tileContent);
+    if (tileContent === "Learn React Basics") {
+      setModalTitle(`${tileContent} Guide`);
+      setModalParagraph(
+        `This guide provides essential steps and tips on how to master ${tileContent}. Double-click on any tile to access its specific guide.`
+      );
+    } else if (tileContent === "Understand Drag & Drop") {
+    } // sleepy_head, I leave the rest to you
+
+    setIsModalOpen(true);
   };
 
-  
-  const renderArrows = () => {
-    return tileConnections.map((connection, index) => {
-      const fromTile = tiles.find((tile) => tile.id === connection.from);
-      const toTile = tiles.find((tile) => tile.id === connection.to);
-      if (!fromTile || !toTile) return null;
-
-      const startX = fromTile.x + 96; // Adjust based on tile width
-      const startY = fromTile.y + 48; // Adjust based on tile height
-      const endX = toTile.x + 96;
-      const endY = toTile.y + 48;
-
-      return (
-        <line
-          key={index}
-          x1={startX}
-          y1={startY}
-          x2={endX}
-          y2={endY}
-          stroke="white"
-          strokeWidth="2"
-          markerEnd="url(#arrowhead)"
-        />
-      );
-    });
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTileContent("");
+    setModalTitle("");
+    setModalParagraph("");
   };
 
   return (
     <div
-      className="flex flex-col min-h-screen bg-gray-900"
+      className="flex flex-col min-h-screen bg-[#2c2c2c]"
       onMouseMove={handleDrag}
       onMouseUp={handleDragEnd}
     >
@@ -101,24 +96,6 @@ const HackersGuide = () => {
           Hacker's Guide
         </h1>
 
-        
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          <defs>
-            <marker
-              id="arrowhead"
-              markerWidth="10"
-              markerHeight="7"
-              refX="10"
-              refY="3.5"
-              orient="auto"
-            >
-              <polygon points="0 0, 10 3.5, 0 7" fill="white" />
-            </marker>
-          </defs>
-          {/* {renderArrows()}  it aint working for now */}
-        </svg>
-
-        
         {tiles.map((tile) => (
           <div
             key={tile.id}
@@ -136,6 +113,26 @@ const HackersGuide = () => {
             {tile.content}
           </div>
         ))}
+
+        {/* Guide Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80 z-50">
+            <div className="bg-gray-800 p-10 rounded-xl shadow-lg max-w-lg w-full text-gray-200 transition-all ease-in-out duration-300 transform scale-110">
+              <h2 className="text-3xl font-semibold text-gray-100 mb-4">
+                {modalTitle}
+              </h2>
+              <p className="mb-6 text-gray-300">{modalParagraph}</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={closeModal}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition duration-300 ease-in-out"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <Footer />
     </div>
