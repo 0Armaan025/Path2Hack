@@ -44,7 +44,7 @@ app.post("/api/projectIdea", async (req, res) => {
       .filter((language) => language !== "null")
       .join(
         ", "
-      )}.Give review in about 1 line first about analysis and suggest user new unique project idea based on these languages and ${ideaDesc}(Without any text decorations in 100 words)`;
+      )}. ${ideaDesc}(without any text decoration or any useless word, give 1 project idea in the format Project Name: Project Tech stack: Why is it unique?: and other things you find good to add, DO NOT ADD ANY TYPE OF DECORATION LIKE **`;
 
     // Call to Gemini AI
     const result = await model.generateContent(prompt);
