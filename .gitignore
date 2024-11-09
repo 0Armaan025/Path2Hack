@@ -1,1 +1,2 @@
 client/path-2-hack/node_modules/*
+server/.env.local
