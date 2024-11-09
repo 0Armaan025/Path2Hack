@@ -19,17 +19,15 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-app.post("/api/projectIdea", async (req, res) => {
+app.post("/api/githubProjectIdea", async (req, res) => {
   const { gitHubToken, ideaDesc } = req.body;
 
   try {
-    // Fetch GitHub repositories
     const reposResponse = await fetch(
       `https://api.github.com/users/${gitHubToken}/repos`
     );
     const repos = await reposResponse.json();
 
-    // Process the repos data to get languages and top repos
     const languageCount = {};
     const topRepos = repos.slice(0, 20).map((repo) => {
       const { name, language } = repo;
@@ -37,16 +35,14 @@ app.post("/api/projectIdea", async (req, res) => {
       return { name, language };
     });
 
-    // Generate a prompt for Gemini AI
     const prompt = `A user whose top GitHub Repos consist of these languages : ${Object.keys(
       languageCount
     )
       .filter((language) => language !== "null")
       .join(
         ", "
-      )}.Give review in about 1 line first about analysis and suggest user new unique project idea based on these languages and ${ideaDesc}(Without any text decorations in 100 words)`;
+      )}. Give review in about 1 line, idea description is ${ideaDesc} (Write a unique project idea in the format: Project Name: description: what makes it unique: tech stack: features: and another important things DO NOT WRITE ANYTHING ELSE OR USELESS)`;
 
-    // Call to Gemini AI
     const result = await model.generateContent(prompt);
     const aiIdea = result.response.text();
     console.log(aiIdea);
@@ -57,5 +53,28 @@ app.post("/api/projectIdea", async (req, res) => {
     return res
       .status(500)
       .json({ error: "Error fetching GitHub repositories" });
+  }
+});
+
+app.post("/api/projectIdea", async (req, res) => {
+  const { description, theme, keywords } = req.body;
+
+  try {
+    const prompt = `Generate a unique project idea based on the following description, theme, and keywords:
+
+    Description: ${description}
+    Theme: ${theme}
+    Keywords: ${keywords.join(", ")}
+    
+    Write a unique project idea in the format: Project Name: description: what makes it unique: tech stack: features: and another important things DO NOT WRITE ANYTHING ELSE OR USELESS`;
+
+    const result = await model.generateContent(prompt);
+    const aiIdea = result.response.text();
+    console.log(aiIdea);
+
+    return res.status(200).json({ idea: aiIdea });
+  } catch (error) {
+    console.error("Error generating project idea:", error);
+    return res.status(500).json({ error: "Error generating project idea" });
   }
 });
