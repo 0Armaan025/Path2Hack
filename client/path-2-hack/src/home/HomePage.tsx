@@ -9,6 +9,8 @@ const HomePage = (props: Props) => {
   return (
     <>
       <Navbar />
+      <br />
+      <br />
       <MiddlePart />
     </>
   );
