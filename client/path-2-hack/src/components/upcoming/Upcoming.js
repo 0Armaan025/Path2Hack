@@ -97,7 +97,8 @@ const Card = ({ event }) => {
     const left = Math.floor(
       (new Date(date) - new Date()) / (1000 * 60 * 60 * 24)
     );
-    if (left < 0) return <p className="line-through">Event ended</p>;
+    if (left < 0)
+      return <span className="line-through text-gray-700">Event ended</span>;
     return left + " days left";
   };
 
@@ -114,9 +115,10 @@ const Card = ({ event }) => {
           />
         </div>
 
-        <div className=" flex flex-[2] bg-red-200 flex-col p-0 m-0 justify-between">
+        <div className=" flex flex-[2] flex-col p-0 m-0 justify-between">
           <h2 className="title">{event.title}</h2>
           <p className="daysLeft">{_daysLeft(event.date)}</p>
+
           <p className="participants">{event.participants} participants</p>
         </div>
       </div>
@@ -129,7 +131,7 @@ const Card = ({ event }) => {
       </div>
 
       <div className="addressContainer">
-        <p className="address">{event.address}</p>
+        <p className="address font-mono">{event.address}</p>
         {/* <img src={src} className="object-contain icon" /> */}
         <div className="icon rounded-full">{_srcAddressIcon}</div>
       </div>

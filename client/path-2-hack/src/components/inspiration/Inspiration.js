@@ -8,7 +8,7 @@ const GenerateIdea = () => {
         className="w-1/2 h-32 p-2 m-2 border-2 border-gray-300 rounded-lg"
         placeholder="Write a basic info of your project"
       ></textarea>
-      <button className="bg-blue-500 text-white p-2 m-2 rounded-lg">
+      <button className="text-[#2c0735] bg-[#858ae3] p-2 m-4 font-mono rounded-lg">
         Generate Brainstorming Idea
       </button>
       {/* <textarea
@@ -26,7 +26,7 @@ const Analyzer = () => {
         className="w-1/2 h-32 p-2 m-2 border-2 border-gray-300 rounded-lg"
         placeholder="Write a basic info of your project"
       ></textarea>
-      <button className="bg-blue-500 text-white p-2 m-2 rounded-lg">
+      <button className="text-[#2c0735] bg-[#858ae3] p-2 m-4 font-mono rounded-lg">
         Analyze your Repositories
       </button>
     </div>
@@ -39,7 +39,7 @@ const Inspiration = () => {
       <h1 className="heading">Get Equipped</h1>
       <div className="container">
         <GenerateIdea />
-        <p className="font-sans text-violet-600 text-[20rem] z-2 p-0 leading-[0.5] font-extralight">
+        <p className="font-sans text-[#97dffc] text-[20rem] z-2 p-0 leading-[0.5] font-extralight">
           /
         </p>
         <Analyzer />

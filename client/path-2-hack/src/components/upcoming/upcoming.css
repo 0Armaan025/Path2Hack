@@ -16,22 +16,30 @@ h2 {
   font-size: 1.5rem;
 }
 
+p {
+  color: #d4d4d4;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
 .slider {
   display: flex;
   flex: 1;
   flex-wrap: wrap;
   justify-content: space-between;
   flex-direction: row;
-  background-color: #fff2;
+  /* background-color: #f0f0f005; */
   padding: 1%;
   border-radius: 8px;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-width: 1px;
 }
 
 .card {
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: darkgray;
+  background-color: #222;
   border-radius: 10px;
   margin: 10px;
   width: 25vw;
@@ -40,15 +48,16 @@ h2 {
 }
 
 .title {
-  color: #c26363;
+  color: #fb8b24;
   font-size: 20px;
   font-weight: 700;
   /* background-color: #ff0; */
   align-items: start;
 }
 
-.desc {
-  align-items: center;
+.daysLeft {
+  color: #e5e5e5;
+  font-weight: 600;
 }
 
 .participants {
@@ -72,10 +81,12 @@ h2 {
 }
 
 .address {
-  background-color: #2224;
+  /* background-color: ; */
   width: fit-content;
   padding: 0px 50px 0px 20px;
+  color: gray;
   border-radius: 20px;
+  /* font-style: monospace; */
 
   border-color: white;
   border-width: 1px;
