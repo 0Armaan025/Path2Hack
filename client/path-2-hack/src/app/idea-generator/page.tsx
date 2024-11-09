@@ -2,6 +2,8 @@
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const IdeaGeneratorPage = () => {
   const [tags, setTags] = useState<string[]>(["MongoDB", "Express", "React"]);
@@ -103,7 +105,11 @@ const IdeaGeneratorPage = () => {
               >
                 Generated Idea
               </h3>
-              <p className="text-gray-600">{analyseRepo}</p>
+              {/* Render the generated idea as markdown */}
+              <ReactMarkdown
+                children={analyseRepo}
+                remarkPlugins={[remarkGfm]}
+              />
             </div>
           )}
         </div>
@@ -156,7 +162,7 @@ const IdeaGeneratorPage = () => {
               <input
                 type="text"
                 value={inputValue}
-                // onChange={(e) => setInputValue(e.target.value)}
+                onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleAddTag}
                 placeholder="Add a keyword and press Enter"
                 className="flex-grow px-2 py-1 focus:outline-none rounded-[0.3rem]"

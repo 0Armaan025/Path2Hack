@@ -7,7 +7,9 @@ const ProjectForm = () => {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [projectImage, setProjectImage] = useState<File | null>(null);
+
   const [devpostUrl, setDevpostUrl] = useState("");
+  const [hackathonName, setHackathonName] = useState("");
   const [devfolioUrl, setDevfolioUrl] = useState("");
   const [githubUrl, setGithubUrl] = useState("");
   const [techStack, setTechStack] = useState<string[]>([]);
@@ -84,6 +86,19 @@ const ProjectForm = () => {
                   Image uploaded successfully.
                 </p>
               )}
+            </div>
+
+            <div>
+              <label className="block mb-2 text-lg font-semibold text-indigo-300">
+                Hackathon name <span className="text-gray-500"></span>
+              </label>
+              <input
+                type="text"
+                value={hackathonName}
+                onChange={(e) => setHackathonName(e.target.value)}
+                placeholder="Hack The Fall (Virtual) 2024"
+                className="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg border-2 border-gray-600 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 outline-none"
+              />
             </div>
 
             <div>
