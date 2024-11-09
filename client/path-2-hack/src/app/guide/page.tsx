@@ -10,7 +10,6 @@ const initialTiles = [
   { id: 4, content: "Deploy Project", x: 300, y: 200 },
 ];
 
-
 const tileConnections = [
   { from: 1, to: 2 },
   { from: 2, to: 3 },
@@ -18,21 +17,25 @@ const tileConnections = [
 ];
 
 const HackersGuide = () => {
-  const [tiles, setTiles] = useState(initialTiles);
+  const [tiles, setTiles] =
+    useState<{ id: number; content: string; x: number; y: number }[]>(
+      initialTiles
+    );
   const [draggingTile, setDraggingTile] = useState<{
     id: number;
     offsetX: number;
     offsetY: number;
   } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTileContent, setSelectedTileContent] = useState("");
 
   const handleDragStart = (
-    tile: { id: number; x: number; y: number },
+    tile: { id: number; content: string; x: number; y: number },
     e: React.MouseEvent<HTMLDivElement>
   ) => {
-    const { id } = tile;
     e.preventDefault();
     setDraggingTile({
-      id,
+      id: tile.id,
       offsetX: e.clientX - tile.x,
       offsetY: e.clientY - tile.y,
     });
@@ -59,18 +62,18 @@ const HackersGuide = () => {
   };
 
   const handleDoubleClick = (tileContent: string) => {
-    alert(`Tile content: ${tileContent}`);
+    setSelectedTileContent(tileContent);
+    setIsModalOpen(true);
   };
 
-  
   const renderArrows = () => {
     return tileConnections.map((connection, index) => {
       const fromTile = tiles.find((tile) => tile.id === connection.from);
       const toTile = tiles.find((tile) => tile.id === connection.to);
       if (!fromTile || !toTile) return null;
 
-      const startX = fromTile.x + 96; // Adjust based on tile width
-      const startY = fromTile.y + 48; // Adjust based on tile height
+      const startX = fromTile.x + 96;
+      const startY = fromTile.y + 48;
       const endX = toTile.x + 96;
       const endY = toTile.y + 48;
 
@@ -89,9 +92,14 @@ const HackersGuide = () => {
     });
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTileContent("");
+  };
+
   return (
     <div
-      className="flex flex-col min-h-screen bg-gray-900"
+      className="flex flex-col min-h-screen bg-[#2c2c2c]"
       onMouseMove={handleDrag}
       onMouseUp={handleDragEnd}
     >
@@ -101,7 +109,6 @@ const HackersGuide = () => {
           Hacker's Guide
         </h1>
 
-        
         <svg className="absolute inset-0 w-full h-full pointer-events-none">
           <defs>
             <marker
@@ -115,11 +122,10 @@ const HackersGuide = () => {
               <polygon points="0 0, 10 3.5, 0 7" fill="white" />
             </marker>
           </defs>
-          {/* {renderArrows()}  it aint working for now */}
+          {/* {renderArrows()} */}
         </svg>
 
-        
-        {tiles.map((tile) => (
+        {tiles.map((tile: any) => (
           <div
             key={tile.id}
             onMouseDown={(e) => handleDragStart(tile, e)}
@@ -136,6 +142,35 @@ const HackersGuide = () => {
             {tile.content}
           </div>
         ))}
+
+        {/* Guide Modal */}
+        {/* Guide Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80 z-50">
+            <div className="bg-gray-800 p-8 rounded-xl shadow-lg max-w-md w-full text-gray-200">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-100">
+                Guide
+              </h2>
+              <p className="mb-4">
+                You’ve selected: <strong>{selectedTileContent}</strong>
+              </p>
+              <p className="mb-6 text-gray-300">
+                This guide provides essential steps and tips on{" "}
+                <strong>{selectedTileContent}</strong>. Double-click on any tile
+                to access its specific guide, which will help you understand the
+                purpose, key actions, and steps involved in this task. Feel free
+                to explore each tile and gain insights on how to proceed
+                effectively with your project.
+              </p>
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       <Footer />
     </div>
