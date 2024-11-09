@@ -8,22 +8,22 @@ import Link from "next/link";
 const Navbar = () => {
   return (
     <nav className="flex items-center justify-between bg-[#1c1c1c] p-2 m-0">
-      <div className="text-white font-bold">
-        <Link href="/">
+      <a href="/">
+        <div className="text-white font-bold">
           <img
             src="./logo.svg"
             alt="LOGO"
             className="w-36 h-10 cursor-pointer"
           />
-        </Link>
-      </div>
+        </div>
+      </a>
       <div className="flex justify-center" style={{ fontFamily: "Poppins" }}>
-        <Link href="/guide">
+        <a href="/guide">
           <div className="text-white mx-4 cursor-pointer">Guide</div>
-        </Link>
-        <Link href="/dashboard">
+        </a>
+        <a href="/projects">
           <div className="text-white mx-4 cursor-pointer">Projects</div>
-        </Link>
+        </a>
       </div>
       <div>
         <Link href="/dashboard">
