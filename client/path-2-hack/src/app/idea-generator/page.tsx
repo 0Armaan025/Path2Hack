@@ -4,8 +4,11 @@ import Footer from "@/components/footer/Footer";
 import React, { useState } from "react";
 
 const IdeaGeneratorPage = () => {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(["MongoDB", "Express", "React"]);
+  const [gitHubToken, setGitHubToken] = useState<string>("demoUser");
+  const [ideaDesc, setIdeaDesc] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
+  const [analyseRepo, setAnalyseRepo] = useState<string>("");
 
   const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if ((event.key === "Enter" || event.key === "Tab") && inputValue) {
@@ -21,9 +24,34 @@ const IdeaGeneratorPage = () => {
     setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
+  async function handleAnalyseRepo(gitHubToken: string, ideaDesc: string) {
+    try {
+      // Send a request to the server with username and tags
+      const response = await fetch("http://localhost:3001/api/projectIdea", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ gitHubToken, ideaDesc }),
+      });
+
+      // Parse the server response
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Project Idea:", data.idea);
+        setAnalyseRepo(data.idea);
+      } else {
+        console.error("Error:", data.error || "Failed to fetch project idea");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="flex flex-col lg:flex-row flex-grow p-6 lg:p-12 rounded-lg">
         <div className="lg:w-1/2 flex flex-col items-center bg-[#c6c6c6] rounded-xl shadow-lg p-6 space-y-3">
           <h2
@@ -44,6 +72,7 @@ const IdeaGeneratorPage = () => {
               type="text"
               placeholder="Enter your GitHub token"
               className="w-full px-4 py-2 border border-gray-300 rounded-[0.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => setGitHubToken(e.target.value)}
             />
           </div>
 
@@ -54,18 +83,32 @@ const IdeaGeneratorPage = () => {
             <textarea
               placeholder="Describe your idea"
               className="w-full h-24 px-4 py-2 border rounded-[0.5rem] border-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onChange={(e) => setIdeaDesc(e.target.value)}
             />
           </div>
 
           <button
             style={{ fontFamily: "Poppins" }}
             className="w-full px-4 py-2 bg-[#0b0909] text-white  font-semibold rounded-[0.5rem] hover:bg-[#211a1a] transition duration-200"
+            onClick={() => handleAnalyseRepo(gitHubToken, ideaDesc)}
           >
             Create Idea
           </button>
+
+          {analyseRepo && (
+            <div className="w-full mt-4 p-4 bg-gray-200 rounded-lg">
+              <h3
+                className="text-lg font-semibold text-gray-800"
+                style={{ fontFamily: "Poppins" }}
+              >
+                Generated Idea
+              </h3>
+              <p className="text-gray-600">{analyseRepo}</p>
+            </div>
+          )}
         </div>
 
-        <div className="hidden lg:block w-px bg-gray-200 mx-6"></div>
+        <div className="hidden lg:block w-[5px] bg-gray-200 mx-8"></div>
 
         <div className="lg:w-1/2 flex flex-col items-center bg-[#c6c6c6] rounded-xl shadow-lg p-6 space-y-4">
           <h2
@@ -113,7 +156,7 @@ const IdeaGeneratorPage = () => {
               <input
                 type="text"
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                // onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleAddTag}
                 placeholder="Add a keyword and press Enter"
                 className="flex-grow px-2 py-1 focus:outline-none rounded-[0.3rem]"
