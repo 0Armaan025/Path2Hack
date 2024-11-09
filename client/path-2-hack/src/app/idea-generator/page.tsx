@@ -156,7 +156,7 @@ const IdeaGeneratorPage = () => {
               <input
                 type="text"
                 value={inputValue}
-                // onChange={(e) => setInputValue(e.target.value)}
+                onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleAddTag}
                 placeholder="Add a keyword and press Enter"
                 className="flex-grow px-2 py-1 focus:outline-none rounded-[0.3rem]"
