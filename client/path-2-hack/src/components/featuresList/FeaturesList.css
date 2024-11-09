@@ -25,6 +25,7 @@
 
 .feature-tile:hover {
   background-color: #3a3a3a;
+  cursor: pointer;
   transform: translateY(-3px);
 }
 
