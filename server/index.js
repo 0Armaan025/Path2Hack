@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
+import axios from "axios";
+import { JSDOM } from "jsdom";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config({ path: ".env.local" });
@@ -76,5 +78,52 @@ app.post("/api/projectIdea", async (req, res) => {
   } catch (error) {
     console.error("Error generating project idea:", error);
     return res.status(500).json({ error: "Error generating project idea" });
+  }
+});
+
+app.post("/api/scrapeAndReviewProject", async (req, res) => {
+  const { url } = req.body;
+
+  try {
+    // Fetch the HTML content of the page
+    const { data } = await axios.get(url);
+
+    // Use jsdom to parse the HTML content
+    const dom = new JSDOM(data);
+    const document = dom.window.document;
+
+    // Collect all visible text from the page
+    let pageText = "";
+    const bodyTextNodes = document.querySelectorAll("body *");
+
+    bodyTextNodes.forEach((node) => {
+      if (node.textContent && node.textContent.trim()) {
+        pageText += node.textContent.trim() + " ";
+      }
+    });
+
+    // Prepare prompt for Gemini with all collected page text
+    const prompt = `
+        Review the following project and provide feedback on areas of improvement.
+        Rate the project on a scale of 1 to 10 based on creativity, technical challenge, and potential impact.
+  
+        Project Text Content: ${pageText}
+  
+        Provide feedback in the following format:
+        Review: [Your Review]
+        Improvements: [Suggested Improvements]
+        Rating (1-10): [Your Rating]
+      `;
+
+    // Send data to Gemini for review
+    const result = await model.generateContent(prompt);
+    const reviewContent = result.response.text();
+
+    return res.status(200).json({ review: reviewContent });
+  } catch (error) {
+    console.error("Error scraping and reviewing project:", error);
+    return res
+      .status(500)
+      .json({ error: "Error scraping and reviewing project" });
   }
 });
