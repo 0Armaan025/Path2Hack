@@ -24,8 +24,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const app = express();
-const uri =
-  "mongodb+srv://armaan:armaan@cluster0.ehrsr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGODB_URI ||
+  "";
 
 const client = new MongoClient(uri);
 
