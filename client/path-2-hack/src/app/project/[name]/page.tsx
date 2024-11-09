@@ -32,7 +32,7 @@ const projectData: Project = {
 const ProjectPage = () => {
   return (
     <>
-      <Navbar />{" "}
+      <Navbar />
       <div className="min-h-screen bg-[#272222] text-gray-100 font-sans">
         <div className="max-w-4xl mx-auto p-8">
           {/* Header Section */}
@@ -43,6 +43,12 @@ const ProjectPage = () => {
             <p className="text-xl text-gray-400 mt-2">
               {projectData.hackathon}
             </p>
+            {/* Winner Badge */}
+            <div className="mt-4">
+              <span className="inline-block bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white px-4 py-2 text-xl font-semibold rounded-full">
+                Winner
+              </span>
+            </div>
           </header>
 
           {/* Project Image */}
@@ -95,7 +101,7 @@ const ProjectPage = () => {
                   href={projectData.devpostUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block py-2 px-6 text-lg text-white bg-blue-600 rounded-md hover:bg-blue-500 transition duration-200"
+                  className="inline-block py-2 px-6 text-lg text-white bg-blue-600 rounded-[0.7rem] hover:bg-blue-500 transition duration-200"
                 >
                   View on Devpost
                 </a>
@@ -103,7 +109,7 @@ const ProjectPage = () => {
                   href={projectData.devfolioUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block py-2 px-6 text-lg text-white bg-green-600 rounded-md hover:bg-green-500 transition duration-200"
+                  className="inline-block py-2 px-6 text-lg text-white bg-green-600 rounded-[0.7rem] hover:bg-green-500 transition duration-200"
                 >
                   View on Devfolio
                 </a>
@@ -111,17 +117,17 @@ const ProjectPage = () => {
                   href={projectData.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block py-2 px-6 text-lg text-white bg-gray-800 rounded-md hover:bg-gray-700 transition duration-200"
+                  className="inline-block py-2 px-6 text-lg text-white bg-gray-800 rounded-[0.7rem] hover:bg-gray-700 transition duration-200"
                 >
                   View on GitHub
                 </a>
               </div>
 
               {/* AI Suggestions Gradient Button */}
-              <div>
+              <div className="mt-4">
                 <a
                   href="#"
-                  className="inline-block py-2 px-6 text-lg text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 rounded-md hover:from-purple-500 hover:via-indigo-500 hover:to-blue-500 transition duration-200"
+                  className="inline-block py-2 px-6 text-lg bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 text-white font-semibold rounded-[0.5rem]"
                 >
                   Get AI Suggestions
                 </a>

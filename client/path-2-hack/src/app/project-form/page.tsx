@@ -15,6 +15,7 @@ const ProjectForm = () => {
   const [techStack, setTechStack] = useState<string[]>([]);
   const [techInput, setTechInput] = useState("");
   const [makePublic, setMakePublic] = useState(false);
+  const [win, setWin] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -214,6 +215,35 @@ const ProjectForm = () => {
                   name="makePublic"
                   checked={!makePublic}
                   onChange={() => setMakePublic(false)}
+                  className="mr-2"
+                />
+                <label htmlFor="private" className="text-indigo-300">
+                  No
+                </label>
+              </div>
+            </div>
+            <div>
+              <label className="block mb-2 text-lg font-semibold text-indigo-300">
+                Did it win?
+              </label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="radio"
+                  id="public"
+                  name="did it win"
+                  checked={win}
+                  onChange={() => setWin(true)}
+                  className="mr-2"
+                />
+                <label htmlFor="public" className="text-indigo-300">
+                  Yes
+                </label>
+                <input
+                  type="radio"
+                  id="private"
+                  name="makePublic"
+                  checked={!win}
+                  onChange={() => setWin(false)}
                   className="mr-2"
                 />
                 <label htmlFor="private" className="text-indigo-300">
