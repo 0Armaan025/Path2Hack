@@ -1,5 +1,6 @@
 .middlePart {
   display: flex;
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -7,13 +8,77 @@
 
 h3 {
   margin-top: 20px;
-  font-size: 3rem;
+  font-size: 4.5rem;
   color: white;
-  font-weight: 700;
+  font-weight: 300;
 }
 
 h4 {
-  font-size: 2rem;
+  font-size: 2.8rem;
+  color: #3ecf8e;
+  font-weight: 500;
+}
+
+h5 {
   color: white;
-  font-weight: 600;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: 400;
+  margin-top: 20px;
+  margin-left: 15rem;
+  margin-right: 17rem;
+}
+
+.buttonsDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboardBtn {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background: #0e432b;
+  transition: 0.3s ease-in-out;
+  border: 1.5px solid rgb(38, 49, 18);
+  border-radius: 6px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  margin-right: 15px;
+}
+
+.dashboardBtn:hover {
+  background: #30845c;
+  cursor: pointer;
+  border: 1.5px solid rgb(76, 99, 33);
+  color: white;
+  cursor: hover;
+}
+
+.guideBtn {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background: #242424;
+  transition: 0.3s ease-in-out;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 6px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  margin-right: 15px;
+  transition: 0.25s ease;
+}
+
+.guideBtn:hover {
+  /* background: #30845c; */
+  cursor: pointer;
+  border: 1.4px solid rgb(255, 255, 255);
+  color: white;
+  cursor: hover;
 }
