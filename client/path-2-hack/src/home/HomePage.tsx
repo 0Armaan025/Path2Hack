@@ -2,6 +2,7 @@ import React from "react";
 import "./homepage.css";
 import Navbar from "@/components/navbar/Navbar";
 import MiddlePart from "./middle/MiddlePart";
+import Footer from "@/components/footer/Footer";
 
 type Props = {};
 
@@ -12,6 +13,8 @@ const HomePage = (props: Props) => {
       <br />
       <br />
       <MiddlePart />
+
+      <Footer />
     </>
   );
 };
