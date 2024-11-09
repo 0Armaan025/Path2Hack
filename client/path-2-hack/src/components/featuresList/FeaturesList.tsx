@@ -1,13 +1,13 @@
 import React from "react";
 import "./FeaturesList.css";
 import {
-  FaDatabase,
-  FaLock,
-  FaCode,
-  FaHdd,
-  FaBolt,
-  FaVectorSquare,
-  FaServer,
+  FaBrain,
+  FaRobot,
+  FaProjectDiagram,
+  FaRocket,
+  FaMap,
+  FaBook,
+  FaSearch,
 } from "react-icons/fa";
 
 type Feature = {
@@ -18,47 +18,54 @@ type Feature = {
 
 const features: Feature[] = [
   {
-    name: "Postgres Database",
-    description: "Reliable, scalable, and highly available.",
-    icon: <FaDatabase />,
+    name: "Project Analyzer",
+    description:
+      "Analyze GitHub repositories to generate project ideas and improvements based on your code.",
+    icon: <FaBrain />,
   },
   {
-    name: "Authentication",
-    description: "Secure user signups and logins.",
-    icon: <FaLock />,
+    name: "AI Idea Generator",
+    description:
+      "Get creative project ideas by providing a prompt or based on your previous projects.",
+    icon: <FaRobot />,
   },
   {
-    name: "Edge Functions",
-    description: "Deploy custom code close to your users.",
-    icon: <FaCode />,
+    name: "Hackathon Guide",
+    description:
+      "Step-by-step workflows and guides on what to expect and prepare for in a hackathon.",
+    icon: <FaMap />,
   },
   {
-    name: "Storage",
-    description: "Store and serve large files with ease.",
-    icon: <FaHdd />,
+    name: "Project Tracking",
+    description:
+      "Track your ongoing projects and hackathons, with detailed status updates and checklists.",
+    icon: <FaProjectDiagram />,
   },
   {
-    name: "Realtime",
-    description: "Enable real-time data synchronization.",
-    icon: <FaBolt />,
+    name: "AI Project Improvement",
+    description:
+      "Receive AI-powered suggestions to enhance your projects and make them more innovative.",
+    icon: <FaRocket />,
   },
   {
-    name: "Vector",
-    description: "Store and search vector embeddings.",
-    icon: <FaVectorSquare />,
+    name: "Inspiration Library",
+    description:
+      "Explore a curated library of project ideas to spark inspiration for your next hack.",
+    icon: <FaBook />,
   },
   {
-    name: "Data APIs",
-    description: "RESTful APIs ready to use out of the box.",
-    icon: <FaServer />,
+    name: "Hack Search",
+    description:
+      "Discover upcoming hackathons and find events based on your interests and skills.",
+    icon: <FaSearch />,
   },
 ];
 
 const FeaturesList = () => {
   return (
-    <div className="features-grid-container">
+    <div className="features-grid-container ">
       {features.map((feature, index) => (
-        <div key={index} className={`feature-tile feature-tile-${index + 1}`}>
+        <div key={index} className="feature-tile">
           <div className="icon">{feature.icon}</div>
           <h3 className="feature-name">{feature.name}</h3>
           <p className="feature-description">{feature.description}</p>

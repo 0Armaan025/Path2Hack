@@ -28,6 +28,8 @@ const HackersGuide = () => {
   } | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTileContent, setSelectedTileContent] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalParagraph, setModalParagraph] = useState("");
 
   const handleDragStart = (
     tile: { id: number; content: string; x: number; y: number },
@@ -62,39 +64,24 @@ const HackersGuide = () => {
   };
 
   const handleDoubleClick = (tileContent: string) => {
+    // Set the modal title and paragraph based on the tile content
     setSelectedTileContent(tileContent);
-    setIsModalOpen(true);
-  };
-
-  const renderArrows = () => {
-    return tileConnections.map((connection, index) => {
-      const fromTile = tiles.find((tile) => tile.id === connection.from);
-      const toTile = tiles.find((tile) => tile.id === connection.to);
-      if (!fromTile || !toTile) return null;
-
-      const startX = fromTile.x + 96;
-      const startY = fromTile.y + 48;
-      const endX = toTile.x + 96;
-      const endY = toTile.y + 48;
-
-      return (
-        <line
-          key={index}
-          x1={startX}
-          y1={startY}
-          x2={endX}
-          y2={endY}
-          stroke="white"
-          strokeWidth="2"
-          markerEnd="url(#arrowhead)"
-        />
+    if (tileContent === "Learn React Basics") {
+      setModalTitle(`${tileContent} Guide`);
+      setModalParagraph(
+        `This guide provides essential steps and tips on how to master ${tileContent}. Double-click on any tile to access its specific guide.`
       );
-    });
+    } else if (tileContent === "Understand Drag & Drop") {
+    } // sleepy_head, I leave the rest to you
+
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedTileContent("");
+    setModalTitle("");
+    setModalParagraph("");
   };
 
   return (
@@ -109,23 +96,7 @@ const HackersGuide = () => {
           Hacker's Guide
         </h1>
 
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          <defs>
-            <marker
-              id="arrowhead"
-              markerWidth="10"
-              markerHeight="7"
-              refX="10"
-              refY="3.5"
-              orient="auto"
-            >
-              <polygon points="0 0, 10 3.5, 0 7" fill="white" />
-            </marker>
-          </defs>
-          {/* {renderArrows()} */}
-        </svg>
-
-        {tiles.map((tile: any) => (
+        {tiles.map((tile) => (
           <div
             key={tile.id}
             onMouseDown={(e) => handleDragStart(tile, e)}
@@ -144,30 +115,21 @@ const HackersGuide = () => {
         ))}
 
         {/* Guide Modal */}
-        {/* Guide Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80 z-50">
-            <div className="bg-gray-800 p-8 rounded-xl shadow-lg max-w-md w-full text-gray-200">
-              <h2 className="text-2xl font-semibold mb-4 text-gray-100">
-                Guide
+            <div className="bg-gray-800 p-10 rounded-xl shadow-lg max-w-lg w-full text-gray-200 transition-all ease-in-out duration-300 transform scale-110">
+              <h2 className="text-3xl font-semibold text-gray-100 mb-4">
+                {modalTitle}
               </h2>
-              <p className="mb-4">
-                You’ve selected: <strong>{selectedTileContent}</strong>
-              </p>
-              <p className="mb-6 text-gray-300">
-                This guide provides essential steps and tips on{" "}
-                <strong>{selectedTileContent}</strong>. Double-click on any tile
-                to access its specific guide, which will help you understand the
-                purpose, key actions, and steps involved in this task. Feel free
-                to explore each tile and gain insights on how to proceed
-                effectively with your project.
-              </p>
-              <button
-                onClick={closeModal}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
-              >
-                Close
-              </button>
+              <p className="mb-6 text-gray-300">{modalParagraph}</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={closeModal}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition duration-300 ease-in-out"
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         )}
