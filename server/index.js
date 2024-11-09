@@ -3,7 +3,9 @@ import cors from "cors";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 import axios from "axios";
+import { MongoClient } from "mongodb";
 import { JSDOM } from "jsdom";
+import multer from "multer";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config({ path: ".env.local" });
@@ -11,14 +13,55 @@ dotenv.config({ path: ".env.local" });
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage });
+
 const app = express();
+const uri =
+  "mongodb+srv://armaan:armaan@cluster0.ehrsr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+const client = new MongoClient(uri);
+
 const port = 3001;
 
 app.use(cors());
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json());
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
+});
+
+// Connect to MongoDB before handling requests
+client.connect().then(() => {
+  console.log("Connected to MongoDB");
+});
+
+const usersCollection = client.db("Path2Hack").collection("users");
+
+app.post("/api/register", async (req, res) => {
+  const { username, email } = req.body;
+
+  try {
+    const existingUser = await usersCollection.findOne({ email });
+    if (existingUser) {
+      return res.status(200).json({ exists: true });
+    }
+
+    const newUser = { username, email };
+    await usersCollection.insertOne(newUser);
+
+    return res.status(201).json({ message: "User registered successfully" });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    return res.status(500).json({ error: "Error registering user" });
+  }
 });
 
 app.post("/api/githubProjectIdea", async (req, res) => {
@@ -125,5 +168,54 @@ app.post("/api/scrapeAndReviewProject", async (req, res) => {
     return res
       .status(500)
       .json({ error: "Error scraping and reviewing project" });
+  }
+});
+
+const projectsCollection = client.db("Path2Hack").collection("projects");
+
+app.post("/api/createProject", upload.single("imageUrl"), async (req, res) => {
+  const {
+    projectName,
+    hackathonName,
+    devpostUrl,
+    devfolioUrl,
+    githubUrl,
+    projectDescription,
+    techStack,
+    isProjectPublic,
+    isWinner,
+    userName,
+  } = req.body;
+
+  const imageUrl = req.file ? req.file.path : null; // Retrieve file path
+
+  try {
+    const existingProject = await projectsCollection.findOne({ projectName });
+    if (existingProject) {
+      return res
+        .status(400)
+        .json({ error: "Project with the same name already exists" });
+    }
+
+    const newProject = {
+      projectName,
+      imageUrl,
+      hackathonName,
+      devpostUrl,
+      devfolioUrl,
+      githubUrl,
+      projectDescription,
+      techStack: JSON.parse(techStack),
+      isProjectPublic: isProjectPublic === "true",
+      isWinner: isWinner === "true",
+      userName,
+    };
+
+    await projectsCollection.insertOne(newProject);
+
+    return res.status(201).json({ message: "Project created successfully" });
+  } catch (error) {
+    console.error("Error creating project:", error);
+    return res.status(500).json({ error: "Error creating project" });
   }
 });

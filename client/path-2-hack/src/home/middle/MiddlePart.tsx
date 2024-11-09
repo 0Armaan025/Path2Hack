@@ -3,12 +3,14 @@ import React from "react";
 import "./middlepart.css";
 import localFont from "next/font/local";
 import FeaturesList from "@/components/featuresList/FeaturesList";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const helvetica = localFont({ src: "../../app/fonts/Helvetica5.ttf" });
 
 type Props = {};
 
 const MiddlePart = (props: Props) => {
+  const { user, error, isLoading } = useUser();
   return (
     <>
       <center>
@@ -28,7 +30,16 @@ const MiddlePart = (props: Props) => {
           </h5>
           <br />
           <div className="buttonsDiv">
-            <input type="button" className="dashboardBtn" value="Dashboard" />
+            <input
+              type="button"
+              className="dashboardBtn"
+              value="Dashboard"
+              onClick={() =>
+                user != null
+                  ? (window.location.href = "/dashboard")
+                  : (window.location.href = "/api/auth/login")
+              }
+            />
             <input type="button" className="guideBtn" value="Guides" />
           </div>
         </div>
