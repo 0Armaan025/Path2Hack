@@ -24,6 +24,9 @@ const Navbar = () => {
         <a href="/projects">
           <div className="text-white mx-4 cursor-pointer">Projects</div>
         </a>
+        <a href="/idea-generator">
+          <div className="text-white mx-4 cursor-pointer">Generate Idea</div>
+        </a>
       </div>
       <div>
         <Link href="/dashboard">

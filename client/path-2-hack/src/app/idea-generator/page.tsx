@@ -53,7 +53,7 @@ const IdeaGeneratorPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* <Navbar /> */}
+      <Navbar />
       <main className="flex flex-col lg:flex-row flex-grow p-6 lg:p-12 rounded-lg">
         <div className="lg:w-1/2 flex flex-col items-center bg-[#c6c6c6] rounded-xl shadow-lg p-6 space-y-3">
           <h2
@@ -63,16 +63,16 @@ const IdeaGeneratorPage = () => {
             Generate a New Idea
           </h2>
           <p className="text-gray-600 text-center">
-            Enter the GitHub token here to get an idea based on what you can
+            Enter the Github username here to get an idea based on what you can
             develop (after analyzing your GitHub repos).
           </p>
           <div className="w-full">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              GitHub Token
+              Github username
             </label>
             <input
               type="text"
-              placeholder="Enter your GitHub token"
+              placeholder="Enter your Github username"
               className="w-full px-4 py-2 border border-gray-300 rounded-[0.5rem] focus:outline-none focus:ring-2 focus:ring-blue-500"
               onChange={(e) => setGitHubToken(e.target.value)}
             />
@@ -125,7 +125,7 @@ const IdeaGeneratorPage = () => {
           </h2>
           <p className="text-gray-600 text-center">
             Enter a custom prompt here to generate a tailored idea without
-            requiring a GitHub token.
+            requiring a Github username.
           </p>
           <textarea
             placeholder="Describe what you would like to create"
