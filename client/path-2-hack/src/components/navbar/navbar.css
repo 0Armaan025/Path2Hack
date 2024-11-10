@@ -1,0 +1,19 @@
+.logo{
+    width: 2.5em;
+    height: auto;
+}
+.navbarLogo{
+    display: flex;
+    align-items: center;
+}
+.heading{
+    font-size: 1.6em;
+    margin-left: 0.2em;
+    font-family: cursive;
+    font-weight: 200;
+}
+.cursive {
+    font-family: cursive;
+    font-weight: 200;
+  }
+  
