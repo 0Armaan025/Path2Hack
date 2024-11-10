@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
+import Cookies from "js-cookie";
 
 const ProjectForm = () => {
   const [projectName, setProjectName] = useState("");
@@ -15,6 +16,7 @@ const ProjectForm = () => {
   const [techStack, setTechStack] = useState<string[]>([]);
   const [techInput, setTechInput] = useState("");
   const [makePublic, setMakePublic] = useState(false);
+  const [win, setWin] = useState(false);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -39,10 +41,40 @@ const ProjectForm = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic
-    alert("Project Submitted Successfully!");
+
+    const formData = new FormData();
+    formData.append("projectName", projectName);
+    formData.append("hackathonName", hackathonName);
+    formData.append("devpostUrl", devpostUrl);
+    formData.append("devfolioUrl", devfolioUrl);
+    formData.append("githubUrl", githubUrl);
+    formData.append("projectDescription", projectDescription);
+    formData.append("techStack", JSON.stringify(techStack));
+    formData.append("isProjectPublic", makePublic.toString());
+    formData.append("isWinner", win.toString());
+    formData.append("userName", Cookies.get("username")?.toString() || "");
+
+    if (projectImage) {
+      formData.append("imageUrl", projectImage as Blob);
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/api/createProject", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("Project Submitted Successfully!");
+      } else {
+        const errorData = await response.json();
+        console.log("Error details:", errorData);
+      }
+    } catch (error) {
+      console.error("Error submitting project:", error);
+    }
   };
 
   return (
@@ -53,6 +85,7 @@ const ProjectForm = () => {
           <h1 className="text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
             Submit Your Project
           </h1>
+
           <p className="text-gray-400 text-center mb-8 text-lg">
             Fill in the details to showcase your project.
           </p>
@@ -64,6 +97,7 @@ const ProjectForm = () => {
               </label>
               <input
                 type="text"
+                name="projectName"
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
                 placeholder="Enter project name"
@@ -77,6 +111,7 @@ const ProjectForm = () => {
               </label>
               <input
                 type="file"
+                name="projectImage"
                 onChange={handleImageUpload}
                 className="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg border-2 border-gray-600 focus:border-indigo-500 transition-all duration-300 outline-none"
                 accept="image/*"
@@ -90,10 +125,11 @@ const ProjectForm = () => {
 
             <div>
               <label className="block mb-2 text-lg font-semibold text-indigo-300">
-                Hackathon name <span className="text-gray-500"></span>
+                Hackathon Name
               </label>
               <input
                 type="text"
+                name="hackathonName"
                 value={hackathonName}
                 onChange={(e) => setHackathonName(e.target.value)}
                 placeholder="Hack The Fall (Virtual) 2024"
@@ -120,6 +156,7 @@ const ProjectForm = () => {
               </label>
               <input
                 type="url"
+                name="devfolioUrl"
                 value={devfolioUrl}
                 onChange={(e) => setDevfolioUrl(e.target.value)}
                 placeholder="https://devfolio-url/your-project"
@@ -133,6 +170,7 @@ const ProjectForm = () => {
               </label>
               <input
                 type="url"
+                name="githubUrl"
                 value={githubUrl}
                 onChange={(e) => setGithubUrl(e.target.value)}
                 placeholder="https://github.com/your-repo"
@@ -146,6 +184,7 @@ const ProjectForm = () => {
               </label>
               <textarea
                 value={projectDescription}
+                name="projectDescription"
                 onChange={(e) => setProjectDescription(e.target.value)}
                 placeholder="Describe your project here..."
                 rows={5}
@@ -160,72 +199,66 @@ const ProjectForm = () => {
               <div className="flex items-center gap-3">
                 <input
                   type="text"
+                  name="techStack"
                   value={techInput}
                   onChange={(e) => setTechInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Add a tech stack tag"
-                  className="flex-grow px-4 py-3 bg-gray-700 text-gray-100 rounded-lg border-2 border-gray-600 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 outline-none"
+                  placeholder="Enter a tech stack"
+                  className="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg border-2 border-gray-600 focus:border-indigo-500 transition-all duration-300 placeholder-gray-400 outline-none"
                 />
                 <button
                   type="button"
                   onClick={handleTechStackAdd}
-                  className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-blue-600 hover:to-indigo-500 text-white rounded-full font-semibold transition-all duration-300"
+                  className="px-4 py-3 bg-indigo-600 text-gray-100 rounded-lg border-2 border-indigo-500 hover:bg-indigo-700 transition-all duration-300"
                 >
                   Add
                 </button>
               </div>
-              <div className="flex flex-wrap gap-3 mt-4">
-                {techStack.map((tech, index) => (
-                  <span
+              <div className="flex flex-wrap gap-3 mt-3">
+                {techStack.map((tag, index) => (
+                  <div
                     key={index}
-                    className="bg-indigo-700 text-white px-3 py-1 rounded-full flex items-center gap-2"
+                    className="px-4 py-2 bg-indigo-600 text-gray-100 rounded-lg flex items-center gap-2"
                   >
-                    {tech}
+                    {tag}
                     <button
-                      onClick={() => handleTechRemove(tech)}
-                      className="text-red-400 font-bold"
+                      type="button"
+                      onClick={() => handleTechRemove(tag)}
+                      className="text-red-500 text-lg"
                     >
-                      ×
+                      &times;
                     </button>
-                  </span>
+                  </div>
                 ))}
               </div>
             </div>
 
-            <div>
-              <label className="block mb-2 text-lg font-semibold text-indigo-300">
-                Make Project Public?
-              </label>
-              <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4 mt-6">
+              <label className="flex items-center gap-2 text-lg text-indigo-300">
                 <input
-                  type="radio"
-                  id="public"
-                  name="makePublic"
+                  type="checkbox"
                   checked={makePublic}
-                  onChange={() => setMakePublic(true)}
-                  className="mr-2"
+                  onChange={() => setMakePublic(!makePublic)}
+                  className="text-indigo-500 rounded"
                 />
-                <label htmlFor="public" className="text-indigo-300">
-                  Yes
-                </label>
+                Make Project Public
+              </label>
+              <label className="flex items-center gap-2 text-lg text-indigo-300">
                 <input
-                  type="radio"
-                  id="private"
-                  name="makePublic"
-                  checked={!makePublic}
-                  onChange={() => setMakePublic(false)}
-                  className="mr-2"
+                  type="checkbox"
+                  checked={win}
+                  onChange={() => setWin(!win)}
+                  className="text-indigo-500 rounded"
                 />
-                <label htmlFor="private" className="text-indigo-300">
-                  No
-                </label>
-              </div>
+                I Won in Hackathon
+              </label>
             </div>
 
-            <div className="text-center">
+            <div className="flex justify-center mt-8">
               <button
                 type="submit"
-                className="px-6 py-3 rounded-full font-bold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-purple-500 hover:to-pink-500 text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-pink-400/50"
+                onClick={handleSubmit}
+                className="px-6 py-3 bg-indigo-600 text-gray-100 font-semibold text-lg rounded-lg shadow-lg hover:bg-indigo-700 transition-all duration-300"
               >
                 Submit Project
               </button>
