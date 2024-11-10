@@ -137,10 +137,10 @@ const IdeaGeneratorPage = () => {
               >
                 Generated Idea
               </h3>
-              <ReactMarkdown
-                children={analyseRepo}
+               <ReactMarkdown
+                
                 remarkPlugins={[remarkGfm]}
-              />
+              >{analyseRepo}</ReactMarkdown>
             </div>
           )}
         </div>
@@ -223,9 +223,10 @@ const IdeaGeneratorPage = () => {
                 Generated Idea
               </h3>
               <ReactMarkdown
-                children={analyseRepo}
+                
                 remarkPlugins={[remarkGfm]}
-              />
+              >{analyseRepo}</ReactMarkdown>
+              
             </div>
           )}
         </div>
