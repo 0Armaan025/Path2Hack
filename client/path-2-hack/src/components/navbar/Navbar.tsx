@@ -4,17 +4,17 @@ import { Button } from "@/components/ui/button";
 
 import "./navbar.css";
 import Link from "next/link";
-
 const Navbar = () => {
   return (
     <nav className="flex items-center justify-between bg-[#1c1c1c] p-2 m-0">
       <a href="/">
-        <div className="text-white font-bold">
+        <div className="text-white font-bold navbarLogo">
           <img
-            src="./logo.svg"
+            src="./logo.webp"
             alt="LOGO"
-            className="w-36 h-10 cursor-pointer"
+            className="w-36 h-10 cursor-pointer logo"
           />
+          <h1 className="heading">Path2<span className="cursive">Hack</span></h1>
         </div>
       </a>
       <div className="flex justify-center" style={{ fontFamily: "Poppins" }}>
@@ -29,14 +29,14 @@ const Navbar = () => {
         </a>
       </div>
       <div>
-        <Link href="/dashboard">
+        <Link href="/api/auth/login">
           <Button
             variant="secondary"
             size="sm"
             style={{ fontFamily: "Poppins" }}
             className="border-[1px] font-bold py-4 text-white px-4 bg-[#cecece2a] border-white rounded"
           >
-            Dashboard
+            Login
           </Button>
         </Link>
       </div>
